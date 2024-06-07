@@ -13,42 +13,39 @@
 #define MINTURNTIME 500
 #define MAXTURNTIME 1500
 
-int check() {
-    TextOut(0,0, "checking");
-    OnFwd(MOT_L, SPD);
-    OnRev(MOT_R, SPD);
-    Wait(100);
-    if (Sensor(CLR_SENS) == BLACK){
-        OnFwd(MOT_L, SPD);
-        OnRev(MOT_R, SPD);
-        Wait(100);
-    } else {
-        OnFwd(MOT_R, SPD);
-        OnRev(MOT_L, SPD);
-        Wait(200);
-        if (Sensor(CLR_SENS) == BLACK){
-            OnFwd(MOT_R, SPD);
-            OnRev(MOT_L, SPD);
-            Wait(100);
-        } else {
-            OnFwd(MOT_L, SPD);
-            OnRev(MOT_R, SPD);
-            Wait(100);
-        }
-    }
+
     
-    ClearScreen();
-}
+
 
 task main() {
     SetSensorColorFull(CLR_SENS);
     int clr = Sensor(CLR_SENS);
-    switch (clr) {
-        case WHITE:
-            check();
-            while (Sensor(CLR_SENS) != BLACK);
-            break;
-        default:
-            OnFwd(MOTS, SPD);
-        }  
+    if (Sensor(CLR_SENS)== WHITE) {
+        OnFwd(MOT_L, SPD);
+        OnRev(MOT_R, SPD);
+        Wait(100);
+        if (Sensor(CLR_SENS) == BLACK){
+            OnFwd(MOT_L, SPD);
+            OnRev(MOT_R, SPD);                    
+            Wait(100);
+        } 
+        else {
+            OnFwd(MOT_R, SPD);                    
+            OnRev(MOT_L, SPD);
+            Wait(200);
+            if (Sensor(CLR_SENS) == BLACK){
+                OnFwd(MOT_R, SPD);
+                OnRev(MOT_L, SPD);
+                Wait(100);
+            } 
+            else {
+                OnFwd(MOT_L, SPD);
+                OnRev(MOT_R, SPD);
+                Wait(100);
+            }
+        }
+    }
+    else{
+        OnFwd(MOTS, SPD);
+    }     
 }
