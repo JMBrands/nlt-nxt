@@ -30,8 +30,13 @@ task main() {
                 Wait(400);
             }
             else {
-                OnFwd(MOTS, SPD);
+                OnFwd(MOT_R, SPD);                    
+                OnRev(MOT_L, SPD);
                 Wait(200);
+                if (Sensor(CLR_SENS)== WHITE) {
+                    OnFwd(MOTS, SPD);
+                    Wait(200);
+                }
             }
             
         }
