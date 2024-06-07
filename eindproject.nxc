@@ -4,20 +4,20 @@
 #define CLR_SENS IN_3
 #define BUTTON IN_2
 #define LAMPIE OUT_A
-#define SPD 15
+#define SPD 40
 #define BLACK 1
 #define BLUE 2
 #define GREEN 3
 #define YELLOW 4
 #define RED 5
 #define WHITE 6
-#define MINTURNTIME 500
+#define MINTURNTIME 1000
 #define MAXTURNTIME 1500
 
 void turnaround() {
     TextOut(0,0, "Turning");
     OnRev(MOTS, SPD);
-    Wait(500);
+    Wait(1000);
     OnFwd(MOT_L, SPD);
     OnRev(MOT_R, SPD);
     Wait(MINTURNTIME);
@@ -49,18 +49,25 @@ task main() {
                 until (Sensor(CLR_SENS) != BLACK);
                 break;
             default:
+                Off(MOTS);
                 if (clr == RED) {
+                    Off(MOTS);
+                    TextOut(0,0, "Nu rood");
                     found[0] = 1;
                 } else if (clr == YELLOW || clr == GREEN) {
+                    TextOut(0,0, "Nu geel");
                     found[1] = 1;
                 } else if (clr == BLUE) {
+                    TextOut(0,0, "Nu blauw");
                     found[2] = 1;
                 }
+                Wait(250);
                 if (found[0] && found[1] && found[2]) {
                     TextOut(0,30, "alles gevonden!");
                     running = false;
                 }
-                until (Sensor(CLR_SENS) == WHITE);
+                OnFwd(MOTS, SPD);
+                // until (Sensor(CLR_SENS) == WHITE);
                 break;
         }
 
@@ -75,7 +82,8 @@ task main() {
         if (found[2])
             TextOut(0,20, "Blauw");
     }
-    Off(MOTS);
+    OnRev(MOT_L, 100);
+    OnFwd(MOT_R, 100);
     OnFwd(LAMPIE, 100);
     PlayTone(587, 150);
     Wait(150);
