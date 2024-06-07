@@ -1,5 +1,5 @@
-#define MOT_L OUT_B
-#define MOT_R OUT_C
+#define MOT_L OUT_C
+#define MOT_R OUT_B
 #define MOTS OUT_BC
 #define CLR_SENS IN_3
 #define LAMPIE OUT_A
@@ -28,6 +28,13 @@ task main() {
                 OnFwd(MOT_R, SPD);                    
                 OnRev(MOT_L, SPD);
                 Wait(400);
+                if (Sensor(CLR_SENS) == WHITE) {
+                    OnFwd(MOT_L, SPD);
+                    OnRev(MOT_R, SPD);
+                    Wait(200);
+                    OnRev(MOTS, SPD);
+                    Wait(75);
+                }
             }
         }
         else {
