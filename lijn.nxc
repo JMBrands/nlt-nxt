@@ -3,7 +3,7 @@
 #define MOTS OUT_BC
 #define CLR_SENS IN_3
 #define LAMPIE OUT_A
-#define SPD 50
+#define SPD 35
 #define BLACK 1
 #define BLUE 2
 #define GREEN 3
@@ -19,33 +19,35 @@
 
 task main() {
     SetSensorColorFull(CLR_SENS);
-    int clr = Sensor(CLR_SENS);
-    if (Sensor(CLR_SENS)== WHITE) {
-        OnFwd(MOT_L, SPD);
-        OnRev(MOT_R, SPD);
-        Wait(100);
-        if (Sensor(CLR_SENS) == BLACK){
+    while (true) {
+        int clr = Sensor(CLR_SENS);
+        if (Sensor(CLR_SENS)== WHITE) {
             OnFwd(MOT_L, SPD);
-            OnRev(MOT_R, SPD);                    
+            OnRev(MOT_R, SPD);
             Wait(100);
-        } 
-        else {
-            OnFwd(MOT_R, SPD);                    
-            OnRev(MOT_L, SPD);
-            Wait(200);
             if (Sensor(CLR_SENS) == BLACK){
-                OnFwd(MOT_R, SPD);
-                OnRev(MOT_L, SPD);
+                OnFwd(MOT_L, SPD);
+                OnRev(MOT_R, SPD);                    
                 Wait(100);
             } 
             else {
-                OnFwd(MOT_L, SPD);
-                OnRev(MOT_R, SPD);
-                Wait(100);
+                OnFwd(MOT_R, SPD);                    
+                OnRev(MOT_L, SPD);
+                Wait(200);
+                if (Sensor(CLR_SENS) == BLACK){
+                    OnFwd(MOT_R, SPD);
+                    OnRev(MOT_L, SPD);
+                    Wait(100);
+                } 
+                else {
+                    OnFwd(MOT_L, SPD);
+                    OnRev(MOT_R, SPD);
+                    Wait(100);
+                }
             }
         }
+        else{
+            OnFwd(MOTS, SPD);
+        }     
     }
-    else{
-        OnFwd(MOTS, SPD);
-    }     
 }
