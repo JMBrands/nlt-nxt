@@ -1,0 +1,19 @@
+/* Naam test
+
+   5F-Gym
+   17/5/2024
+*/
+
+#define CLR_SENS IN_3
+#define ROOD 5
+#define ZWART 1
+#define SNEL 80
+#define MOTOREN OUT_A
+#define RIJTIJD 1000
+
+task main() {
+   OnFwd(MOTOREN, SNEL);
+   Wait(RIJTIJD);
+   Off(MOTOREN);
+}
+

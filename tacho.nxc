@@ -1,0 +1,7 @@
+#define MOT OUT_B
+
+task main() {
+    while (1) {
+        NumOut(0,0, MotorTachoCount(MOT));
+    }
+}

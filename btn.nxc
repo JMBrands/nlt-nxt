@@ -1,0 +1,11 @@
+#define BTN IN_1
+#define MOT OUT_BC
+
+task main() {
+    while (1) {
+        until (ButtonPressed(BTN, 0));
+        OnFwd(MOT, 80);
+        while (ButtonPressed(BTN, 0));
+        Off(MOT);
+    }
+}

@@ -1,0 +1,11 @@
+#define LED OUT_A
+#define TIME 100
+
+task main() {
+    while (1) {
+        OnFwd(LED, 80);
+        Wait(TIME);
+        Off(LED);
+        Wait(TIME);
+    }
+}

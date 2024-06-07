@@ -1,0 +1,16 @@
+#define MOT_R OUT_C
+#define MOT_L OUT_B
+#define BTN IN_1
+
+task main() {
+    while (1) {
+        OnFwd(MOT_R, (Random(2) == 0 ? -1 : 1) * (Random(50)+50));
+        OnFwd(MOT_L, (Random(2) == 0 ? -1 : 1) * (Random(50)+50));
+        Wait(Random(1000));
+
+        if (ButtonState(BTN)) {
+            PlayFile("! Attention.rso");
+            break;
+        }
+    }
+}

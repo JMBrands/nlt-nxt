@@ -1,0 +1,13 @@
+#define CLR_SENS IN_3
+#define LED OUT_A
+#define BLACK 1
+
+task main() {
+    SetSensorColorFull(CLR_SENS);
+    while (1) {
+        until (Sensor(CLR_SENS) == BLACK);
+        OnFwd(LED, 90);
+        until (Sensor(CLR_SENS) != BLACK);
+        Off(LED);
+    }
+}

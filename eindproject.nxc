@@ -1,0 +1,92 @@
+#define MOT_L OUT_B
+#define MOT_R OUT_C
+#define MOTS OUT_BC
+#define CLR_SENS IN_3
+#define BUTTON IN_2
+#define LAMPIE OUT_A
+#define SPD 15
+#define BLACK 1
+#define BLUE 2
+#define GREEN 3
+#define YELLOW 4
+#define RED 5
+#define WHITE 6
+#define MINTURNTIME 500
+#define MAXTURNTIME 1500
+
+void turnaround() {
+    TextOut(0,0, "Turning");
+    OnRev(MOTS, SPD);
+    Wait(500);
+    OnFwd(MOT_L, SPD);
+    OnRev(MOT_R, SPD);
+    Wait(MINTURNTIME);
+    OnFwd(MOTS, SPD);
+    ClearScreen();
+}
+
+task main() {
+    LocationType myPoints[] = {16,16, 8,40, 32,52, 20,36, 52,36, 56,52, 64,32, 44,20, 24,20};
+    
+    bool found[] = {false, false, false}; // R, Y, B
+    bool running = true;
+    SetSensorColorFull(CLR_SENS);
+    SetSensorTouch(BUTTON);
+    OnFwd(MOTS, SPD);
+    TextOut(0,0, " ");
+    // until (Sensor(CLR_SENS) == BLACK);
+    // until (Sensor(CLR_SENS) == WHITE);
+    while (running) {
+        int clr = Sensor(CLR_SENS);
+        OnFwd(MOTS, SPD);
+        while (clr == WHITE) { // while (! c)
+            clr = Sensor(CLR_SENS);
+        }
+        NumOut(0,10, (clr = Sensor(CLR_SENS)));
+        switch (clr) {
+            case BLACK:
+                turnaround();
+                until (Sensor(CLR_SENS) != BLACK);
+                break;
+            default:
+                if (clr == RED) {
+                    found[0] = 1;
+                } else if (clr == YELLOW || clr == GREEN) {
+                    found[1] = 1;
+                } else if (clr == BLUE) {
+                    found[2] = 1;
+                }
+                if (found[0] && found[1] && found[2]) {
+                    TextOut(0,30, "alles gevonden!");
+                    running = false;
+                }
+                until (Sensor(CLR_SENS) == WHITE);
+                break;
+        }
+
+        if (Sensor(BUTTON)) {
+            turnaround();
+        }
+
+        if (found[0])
+            TextOut(0,0, "Rood");
+        if (found[1])
+            TextOut(0,10, "Geel");
+        if (found[2])
+            TextOut(0,20, "Blauw");
+    }
+    Off(MOTS);
+    OnFwd(LAMPIE, 100);
+    PlayTone(587, 150);
+    Wait(150);
+    PlayTone(698, 150);
+    Wait(150);
+    PlayTone(880, 150);
+    Wait(150);
+    PlayTone(1047, 150);
+    Wait(300);
+    PlayTone(880, 150);
+    Wait(150);
+    PlayTone(1047, 500);
+    Wait(5000);
+}

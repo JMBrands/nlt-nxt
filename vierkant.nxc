@@ -1,0 +1,21 @@
+#define MOTORS OUT_BC
+#define SPD 75
+#define MOTOR_R OUT_B
+#define MOTOR_L OUT_C
+#define TIME 1500
+#define ROTTIME 250
+#define LED OUT_A
+
+task main() {
+    repeat (4) {
+        OnFwd(MOTORS, SPD);
+        Wait(TIME);
+        Off(MOTORS);
+        OnFwd(LED, SPD);
+        OnFwd(MOTOR_L, SPD);
+        OnRev(MOTOR_R, SPD);
+        Wait(ROTTIME);
+        Off(LED);
+    }
+    Off(MOTORS);
+}

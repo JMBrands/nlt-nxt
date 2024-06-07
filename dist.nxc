@@ -1,0 +1,23 @@
+#define MOTS OUT_BC
+#define SPD 25
+#define BTN IN_1
+#define CLR IN_3
+#define BLACK 1
+#define BLUE 2
+#define GREEN 3
+#define YELLOW 4
+#define RED 5
+#define WHITE 6
+
+task main() {
+    SetSensorTouch(BTN);
+    SetSensorColorFull(CLR);
+    OnFwd(MOTS, SPD);
+    until(Sensor(CLR) == BLACK);
+    until(Sensor(CLR) == WHITE);
+    OnFwdEx(MOTS, SPD, RESET_ALL);
+    until(Sensor(CLR) == BLACK);
+    NumOut(0,0, MotorTachoCount(MOTS));
+    Off(MOTS);
+    Wait(5000);
+}

@@ -1,0 +1,23 @@
+#define KLEURENSENSOR IN_3
+#define WIT 6
+#define ZWART 1
+#define GA 80
+#define MOTOREN OUT_BC
+#define LED OUT_A
+
+task main ()
+{
+    while (1) {
+        SetSensorColorFull(KLEURENSENSOR);
+        while(Sensor(KLEURENSENSOR) == WIT){
+            OnFwd(LED, GA);
+            OnFwd(MOTOREN, GA);
+        }
+        Off(MOTOREN);
+        Off(LED);
+        while(Sensor(KLEURENSENSOR) == ZWART){
+            OnRev(MOTOREN, GA);
+        }
+        Off(MOTOREN);
+    }
+}

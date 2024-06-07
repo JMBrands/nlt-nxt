@@ -1,0 +1,20 @@
+#define SPD 80
+#define MOT OUT_BC
+
+void rij(int dist) {
+    OnFwd(MOT, SPD);
+    Wait(dist);
+    OnRev(MOT, SPD);
+    Wait(dist);
+    Off(MOT);
+}
+
+task main() {
+    int dst = 1000;
+
+    repeat (2) {
+        rij(dst);
+        dst *= 2;
+    }
+    Off(MOT);
+}

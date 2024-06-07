@@ -1,0 +1,48 @@
+#define MOT_L OUT_B
+#define MOT_R OUT_C
+#define MOTS OUT_BC
+#define CLR_SENS IN_3
+#define LAMPIE OUT_A
+#define SPD 100
+#define BLACK 1
+#define BLUE 2
+#define GREEN 3
+#define YELLOW 4
+#define RED 5
+#define WHITE 6
+#define TURNTIME 50
+
+void turnaround() {
+    repeat (2) {
+        OnFwd(MOT_L, SPD);
+        OnRev(MOT_R, SPD);
+        Wait(TURNTIME);
+        OnFwd(MOTS, SPD);
+        Wait(100);
+    }
+}
+
+task main() {
+    int counter = 0;
+    SetSensorColorFull(CLR_SENS);
+    OnFwd(MOTS, SPD);
+    while (1) {
+        until (Sensor(CLR_SENS) != WHITE);
+        switch (Sensor(CLR_SENS)) {
+            case BLACK:
+                turnaround();
+                break;
+            default:
+                counter++;
+                until (Sensor(CLR_SENS) == WHITE);
+                break;
+        }
+
+        if (counter > 1) {
+            OnFwd(LAMPIE, SPD);
+            Off(MOTS);
+            Wait(1000);
+            break;
+        }
+    }
+}
