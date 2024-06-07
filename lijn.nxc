@@ -29,16 +29,6 @@ task main() {
                 OnRev(MOT_L, SPD);
                 Wait(400);
             }
-            else {
-                OnFwd(MOT_R, SPD);                    
-                OnRev(MOT_L, SPD);
-                Wait(200);
-                if (Sensor(CLR_SENS)== WHITE) {
-                    OnFwd(MOTS, SPD);
-                    Wait(200);
-                }
-            }
-            
         }
         else {
             OnFwd(MOTS, SPD);
