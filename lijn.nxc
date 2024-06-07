@@ -24,26 +24,16 @@ task main() {
             OnFwd(MOT_L, SPD);
             OnRev(MOT_R, SPD);
             Wait(200);
-            if (Sensor(CLR_SENS) == BLACK){
-                OnFwd(MOT_L, SPD);
-                OnRev(MOT_R, SPD);                    
-                Wait(200);
-            } 
-            else {
+            if (Sensor(CLR_SENS)== WHITE) {
                 OnFwd(MOT_R, SPD);                    
                 OnRev(MOT_L, SPD);
-                Wait(400);
-                if (Sensor(CLR_SENS) == BLACK){
-                    OnFwd(MOT_R, SPD);
-                    OnRev(MOT_L, SPD);
-                    Wait(200);
-                } 
+                Wait(200);
                 else {
+                    OnFwd(MOTS, SPD);
+                    Wait(200);
                     OnFwd(MOT_L, SPD);
                     OnRev(MOT_R, SPD);
                     Wait(200);
-                    OnFwd(MOTS, SPD)
-                    Wait(200)
                 }
             }
         }
