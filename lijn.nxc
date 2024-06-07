@@ -17,12 +17,27 @@ int check() {
     TextOut(0,0, "checking");
     OnFwd(MOT_L, SPD);
     OnRev(MOT_R, SPD);
-    Wait(200);
-    if (Sensor(CLR_SENS) == BLACK) return 1;
+    Wait(100);
+    if (Sensor(CLR_SENS) == BLACK){
+        OnFwd(MOT_L, SPD);
+        OnRev(MOT_R, SPD);
+        Wait(100)
+    }
+    else{
+        OnFwd(MOT_R, SPD);
+        OnRev(MOT_L, SPD);
+        Wait(200)
+        if (Sensor(CLR_SENS) == BLACK){
+            OnFwd(MOT_R, SPD);
+            OnRev(MOT_L, SPD);
+            Wait(100)
+        else{
+            OnFwd(MOT_L, SPD);
+        OnRev(MOT_R, SPD);
+        Wait(100)
+        }
+    }
     
-
-
-
     ClearScreen();
 }
 
@@ -31,7 +46,7 @@ task main() {
     int clr = Sensor(CLR_SENS);
     switch (clr) {
         case WHITE:
-            check;
+            check();
             while (Sensor(CLR_SENS) != BLACK);
             break;
         default:
