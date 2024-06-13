@@ -15,34 +15,45 @@
 #define MAXTURNTIME 1500
 
 // liefst robot 02
-bool ping;
 
 void startup() {
-        string starttext1 = "Start in ";
-        TextOut(0, 32, starttext1);
-        PlayTone(300, 500);
-        Wait(600);
-        string starttext2 = "3 ";
-        TextOut(0, 40, starttext2);
-        PlayTone(300, 500);
-        Wait(600);
-        string starttext3 ="2 ";
-        TextOut(0, 48, starttext3);
-        PlayTone(300, 500);
-        Wait(600);
-        string starttext4 ="1 ";
-        TextOut(0, 56, starttext4);
-        PlayTone(300, 500);
-        Wait(600);
-        string starttext5 ="START!!! ";
-        TextOut(0, 0, starttext5);
-        PlayTone(500, 1300);
-        Wait(1500);
+    /*
+    speel 4 keer een toon van 300Hz en dan een van 500Hz, bij elke toon telt hij af op het scherm
+    */
+    string starttext1 = "Start in ";
+    TextOut(0, 32, starttext1);
+    PlayTone(300, 500);
+    Wait(600);
+    string starttext2 = "3 ";
+    TextOut(0, 40, starttext2);
+    PlayTone(300, 500);
+    Wait(600);
+    string starttext3 ="2 ";
+    TextOut(0, 48, starttext3);
+    PlayTone(300, 500);
+    Wait(600);
+    string starttext4 ="1 ";
+    TextOut(0, 56, starttext4);
+    PlayTone(300, 500);
+    Wait(600);
+    string starttext5 ="START!!! ";
+    TextOut(0, 0, starttext5);
+    PlayTone(500, 1300);
+    Wait(1500);
 }
 
 
 
 void turnaround() {
+    /*
+    zet "Turning" onderaan scherm
+    zet allebei de motors achteruit
+    wacht 1 seconde
+    zet de linkermotor vooruit en de rechtermotor achteruit
+    wacht een random tijd tussen 1 en 1,5 seconden
+    zet allebei de motors vooruit
+    maak scherm leeg
+    */
     TextOut(0,0, "Turning");
     OnRev(MOTS, SPD);
     Wait(1000);
@@ -54,6 +65,9 @@ void turnaround() {
 }
 
 void colorPing() {
+    /*
+    speel drie tonen, F, A & B; elk voor een kwart seconde
+    */
     PlayTone(698, 250);
     Wait(250);
     PlayTone(880, 250);
@@ -63,34 +77,45 @@ void colorPing() {
 }
 
 task main() {
+    // speel de geluiden af met de countdown
     startup();
-    LocationType myPoints[] = {16,16, 8,40, 32,52, 20,36, 52,36, 56,52, 64,32, 44,20, 24,20};
-    ping = false;
-    bool found[] = {false, false, false}; // R, Y, B
-    bool running = true;
+    bool found[] = {false, false, false}; // gevonden kleuren R, Y, B
+
+    // initialiseer de sensoren
     SetSensorColorFull(CLR_SENS);
     SetSensorTouch(BUTTON);
+
+    // motoren aan
     OnFwd(MOTS, SPD);
-    TextOut(0,0, " ");
-    // until (Sensor(CLR_SENS) == BLACK);
-    // until (Sensor(CLR_SENS) == WHITE);
+
+    // reset scherm
+    ClearScreen();
+
+    // mainloop
     while (true) {
         int clr = Sensor(CLR_SENS);
+
+        // zet motoren aan 
         OnFwd(MOTS, SPD);
-        while (clr == WHITE) { // while (! c)
+        // wacht tot de sensor iets anders dan wit ziet
+        while (clr == WHITE) {
             clr = Sensor(CLR_SENS);
         }
-        NumOut(0,10, (clr = Sensor(CLR_SENS)));
+
+        // beslis wat te doen met de gevonden kleur
         switch (clr) {
+            // indien zwart: draai en wacht tot een andere kleur gedetecteerd wordt
             case BLACK:
                 turnaround();
                 until (Sensor(CLR_SENS) != BLACK);
                 break;
+            
+            // indien rood, geel/groen of blauw, laat op scherm zien welke kleur, als de kleur nog niet gevonden was,
+            // zet vervolgens de waarde op de goede index van found op true en speel een geluid af
             case RED:
                 TextOut(0,0, "Nu rood");
                 if (!found[0]) {
                     found[0] = true;
-                    Coast(MOTS);
                     colorPing();
                 }
                 break;
