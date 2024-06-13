@@ -14,7 +14,7 @@
 #define MINTURNTIME 1000
 #define MAXTURNTIME 1500
 
-// liefst robot 02
+// liefst robot 02 ivm geluid
 
 void startup() {
     /*
@@ -80,6 +80,7 @@ task main() {
     // speel de geluiden af met de countdown
     startup();
     bool found[] = {false, false, false}; // gevonden kleuren R, Y, B
+    bool inField = false;
 
     // initialiseer de sensoren
     SetSensorColorFull(CLR_SENS);
@@ -87,7 +88,13 @@ task main() {
 
     // motoren aan
     OnFwd(MOTS, SPD);
-
+    while (!inField) {
+        until (Sensor(CLR_SENS) == WHITE);
+        Wait(100);
+        if (Sensor(CLR_SENS) == WHITE)
+            inField = true;
+    }
+    
     // reset scherm
     ClearScreen();
 
@@ -135,15 +142,18 @@ task main() {
                 break;
         }
 
+        // laat "alles gevonden!" zien op het scherm en stop de loop
         if (found[0] && found[1] && found[2]) {
             TextOut(0,30, "alles gevonden!");
             break;
         }
 
+        // draai wat als de knop ingedrukt wordt
         if (Sensor(BUTTON)) {
             turnaround();
         }
 
+        // laat zien welke kleuren gevonden zijn
         if (found[0])
             TextOut(0,0, "Rood");
         if (found[1])
@@ -151,6 +161,8 @@ task main() {
         if (found[2])
             TextOut(0,20, "Blauw");
     }
+
+    // zet motoren uit, speel dan wat geluid en draai voor 5 seconden rond
     Coast(MOTS);
     OnFwd(LAMPIE, 100);
     PlayTone(587, 150);
