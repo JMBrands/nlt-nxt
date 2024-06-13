@@ -2,33 +2,21 @@
 #define MOT_R OUT_B
 #define MOTS OUT_BC
 #define CLR_SENS IN_3
-#define LAMPIE OUT_A
 #define SPD 35
-#define BLACK 1
-#define BLUE 2
-#define GREEN 3
-#define YELLOW 4
-#define RED 5
 #define WHITE 6
-#define MINTURNTIME 500
-#define MAXTURNTIME 1500
-
-
-    
-
 
 task main() {
     SetSensorColorFull(CLR_SENS);
     while (true){
-        if (Sensor(CLR_SENS)== WHITE) {
+        if (Sensor(CLR_SENS)== WHITE) { //als de robot van de lijn raakt en dus wit ziet ipv de kleur van de lijn draait de robot naar rechts om te kijken of de lijn daar wel is
             OnFwd(MOT_L, SPD);
             OnRev(MOT_R, SPD);
             Wait(200);
-            if (Sensor(CLR_SENS)== WHITE) {
+            if (Sensor(CLR_SENS)== WHITE) { // als de robot de lijn nog steeds niet gevonden heeft draait de robot naar links om te kijken of de lijn daar wel is
                 OnFwd(MOT_R, SPD);                    
                 OnRev(MOT_L, SPD);
                 Wait(400);
-                if (Sensor(CLR_SENS) == WHITE) {
+                if (Sensor(CLR_SENS) == WHITE) { // als hij de lijn dan aan beide kanten niet kan vinden zal hij zichzelf recht zetten en een stukje naar achteren rijden
                     OnFwd(MOT_L, SPD);
                     OnRev(MOT_R, SPD);
                     Wait(200);
@@ -38,7 +26,7 @@ task main() {
             }
         }
         else {
-            OnFwd(MOTS, SPD);
+            OnFwd(MOTS, SPD); // als de robot de lijn gevonden heeft gaat hij vooruit
         }     
     }
 }
